@@ -103,24 +103,24 @@ export default class CodePushReleaseCommandBase extends AppCommand {
     this.deploymentName = this.specifiedDeploymentName;
 
     if (this.privateKeyPath) {
-      const appInfo = (
-        await out.progress(
-          "Getting app info...",
-          clientRequest<models.AppResponse>((cb) => client.appsOperations.get(this.app.ownerName, this.app.appName, cb))
-        )
-      ).result;
-      const platform = appInfo.platform.toLowerCase();
+      // const appInfo = (
+      //   await out.progress(
+      //     "Getting app info...",
+      //     clientRequest<models.AppResponse>((cb) => client.appsOperations.get(this.app.ownerName, this.app.appName, cb))
+      //   )
+      // ).result;
+      // const platform = appInfo.platform.toLowerCase();
 
       // In React-Native case we should add "CodePush" name folder as root for relase files for keeping sync with React Native client SDK.
       // Also single file also should be in "CodePush" folder.
-      if (
-        platform === "react-native" &&
-        (getLastFolderInPath(this.updateContentsPath) !== "CodePush" || !isDirectory(this.updateContentsPath))
-      ) {
-        await moveReleaseFilesInTmpFolder(this.updateContentsPath).then((tmpPath: string) => {
-          this.updateContentsPath = tmpPath;
-        });
-      }
+      // if (
+      //   platform === "react-native" &&
+      //   (getLastFolderInPath(this.updateContentsPath) !== "CodePush" || !isDirectory(this.updateContentsPath))
+      // ) {
+      //   await moveReleaseFilesInTmpFolder(this.updateContentsPath).then((tmpPath: string) => {
+      //     this.updateContentsPath = tmpPath;
+      //   });
+      // }
 
       await sign(this.privateKeyPath, this.updateContentsPath);
     }
